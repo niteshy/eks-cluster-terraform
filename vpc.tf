@@ -39,6 +39,7 @@ resource "aws_vpc" "main" {
 
   tags = tomap({
     "Name"                                      = "${var.vpc_name}",
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
   })
 }
 
@@ -66,6 +67,8 @@ resource "aws_subnet" "main_public" {
 
   tags = tomap({
     "Name"                                      = "${var.eks_cluster_name}-public-${count.index + 1}",
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
+    "kubernetes.io/role/elb"                    = 1
   })
 }
 
@@ -80,6 +83,8 @@ resource "aws_subnet" "main_private" {
 
   tags = tomap({
     "Name"                                      = "${var.eks_cluster_name}-private-${count.index + 1}",
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
+    "kubernetes.io/role/internal-elb"           = 1
   })
 }
 
